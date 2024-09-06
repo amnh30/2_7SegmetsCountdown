@@ -75,6 +75,7 @@ void TimerUp(void)
             PORTA = ~SSDArr[tenscount]; // Display digit on the first 7-segment
             Ones = tenscount;            // Update Ones variable
             tenscount++;
+            if(tenscount == 10){tenscount =0;}
             _delay_ms(DELAY_MS);         // Delay
         }
 
@@ -87,6 +88,7 @@ void TimerUp(void)
             PORTC = ~SSDArr[onescount]; // Display digit on the second 7-segment
             Tens = onescount;           // Update Tens variable
             onescount++;
+            if(onescount == 10){onescount =0;}
             // Adjust delay if specific buttons are pressed
             if (PINB == 0b11111100)
             {
