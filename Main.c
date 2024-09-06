@@ -23,7 +23,7 @@
 #define EIGHT 0b01111111 // 8
 #define NINE 0b01101111  // 9
 
-#define DELAY_MS 500 // Delay in milliseconds
+#define DELAY_MS 1000 // Delay in milliseconds
 
 // Array holding the binary representations of the digits for the 7-segment display
 u8 SSDArr[10] = {ZERO, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE};
@@ -62,24 +62,31 @@ int main(void)
 void TimerUp(void)
 {
     u8 CountDownResult = 0;
-
+    u8 tenscount= 0;
+    u8 onescount= 0;
     // Loop through digits 0-9
-    for (u8 TimeCount = 0; TimeCount < 10; TimeCount++)
-    {
+   while(1){
         // If button connected to PB1 or PB2 is pressed
         if (PINB == 0b11111110 || PINB == 0b11111100)
         {
-            PORTA = ~SSDArr[TimeCount]; // Display digit on the first 7-segment
-            Ones = TimeCount;            // Update Ones variable
+            if(PINB == 0b11111000){
+            CountDown();
+            }
+            PORTA = ~SSDArr[tenscount]; // Display digit on the first 7-segment
+            Ones = tenscount;            // Update Ones variable
+            tenscount++;
             _delay_ms(DELAY_MS);         // Delay
         }
 
         // If button connected to PB0 or PB2 is pressed
         if (PINB == 0b11111101 || PINB == 0b11111100)
         {
-            PORTC = ~SSDArr[TimeCount]; // Display digit on the second 7-segment
-            Tens = TimeCount;           // Update Tens variable
-            
+            if(PINB == 0b11111000){
+            CountDown();
+            }
+            PORTC = ~SSDArr[onescount]; // Display digit on the second 7-segment
+            Tens = onescount;           // Update Tens variable
+            onescount++;
             // Adjust delay if specific buttons are pressed
             if (PINB == 0b11111100)
             {
